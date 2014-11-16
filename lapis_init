@@ -33,7 +33,7 @@ if #arg == 0 or arg[1] == "-h" then
         Available actions:
         [name]      name of the lapis project
         -p <path>   the location of the installation for the project.
-        -d <path>   makes the docker container: abaez/lapis. Needs docker-lapis path.
+        -d <path>   makes the docker container. Needs docker-lapis path.
         -h          prints this text
 
     ]=])
@@ -51,7 +51,8 @@ else
             end
         end
     else
-        assert(arg[1] ~= '-d' and arg[1] ~= '-p', "run: lapis_init -h for help")
+        assert(arg[1] ~= '-d' and arg[1] ~= '-p',
+               "run: lapis_init -h for help")
         print("making environment project: " .. arg[1])
         wait()
         build_env(string.format("%s/%s", io.popen("pwd"):read(), arg[1]))
