@@ -1,7 +1,7 @@
 #!/usr/bin/lua
 ---  lapis initilization builder with custom settings.
 -- @author Alejandro Baez <alejan.baez@gmail.com>
--- @license MIT (see LICENSE)
+-- @license MIT (see @{README.md.LICENSE|LICENSE})
 -- @module lapis_init
 
 local help = [=[
@@ -29,7 +29,7 @@ end
 
 --- creates the docker container for lapis.
 -- @function build_docker
--- @param loc the location of the lapis install.
+-- @param loc the location of the docker-lapis local copy.
 function build_docker(loc)
     loc = loc or "/data/Projects/self/docker-lapis"
     os.execute("cd " .. loc .. "; docker build -t abaez/lapis .")
@@ -46,7 +46,7 @@ function build_env(loc, template)
     make_fig(loc)
 end
 
---- simple delay timing function
+--- simple delay timer.
 -- @function wait
 function wait()
     local t = os.time() + 3
