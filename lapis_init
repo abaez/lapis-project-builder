@@ -25,7 +25,6 @@ function wait()
     end
 end
 
-print(#arg)
 if #arg == 0 or arg[1] == "-h" then
     print([=[
         lapis_init v0.01
@@ -52,7 +51,7 @@ else
             end
         end
     else
-        assert(arg[1] ~= '-d' or arg[1] ~= '-p', "run: lapis_init -h for help")
+        assert(arg[1] ~= '-d' and arg[1] ~= '-p', "run: lapis_init -h for help")
         print("making environment project: " .. arg[1])
         wait()
         build_env(string.format("%s/%s", io.popen("pwd"):read(), arg[1]))
