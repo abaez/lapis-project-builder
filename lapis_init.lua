@@ -1,6 +1,6 @@
 #!/usr/bin/lua
 ---  lapis initilization builder with custom settings.
--- @author Alejandro Baez<alejan.baez@gmail.com>
+-- @author Alejandro Baez <alejan.baez@gmail.com>
 -- @license MIT (see LICENSE)
 -- @module lapis_init
 
