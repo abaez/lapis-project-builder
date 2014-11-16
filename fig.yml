@@ -1,0 +1,4 @@
+web:
+  image: abaez/lapis
+  ports:
+    - "8080:8080"

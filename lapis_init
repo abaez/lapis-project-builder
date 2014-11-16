@@ -1,0 +1,56 @@
+#!/usr/bin/lua
+
+dl = "/data/Projects/self/docker-lapis"
+
+function make_fig(loc)
+    fa = io.open(loc .. "/fig.yml", "a+")
+    fa:write("\tvolumes:\n")
+    fa:write("\t\t- " .. loc .. ":/server")
+    fa:close()
+end
+
+function build_docker()
+    os.execute("docker build -t abaez/lapis .")
+end
+
+function build_env(loc)
+    os.execute(string.format("hg clone %s %s", dl, loc))
+    os.execute("echo '' > " .. loc .. '/.hg/hgrc')
+    make_fig(loc)
+end
+
+function wait()
+    local t = os.time() + 3
+    while os.time() < t  do
+    end
+end
+
+print(#arg)
+if #arg == 0 or arg[1] == "-h" then
+    print([=[
+        lapis_init v0.01
+        usage: lapis_init <name> [-p <path>] [-d]
+
+        Available actions:
+        [name]          name of the lapis project
+        -p <path>       the location of the installation for the project.
+        -d              makes the docker container: abaez/lapis.
+        -h              prints this text
+
+    ]=])
+else
+    if #arg then
+        build_env(io.popen("pwd ") .. "/" .. arg[1])
+        for i = 2, #arg do
+            if arg[i] == '-d' then
+                print("building docker container")
+                wait()
+                build_docker()
+            elseif arg[i] == '-p' then
+                print("making environment build")
+                wait()
+                build_env(arg[i+1] .. "/" .. arg[1])
+            end
+        end
+    end
+end
