@@ -6,10 +6,10 @@
 
 local help = [=[
     lapis_init v0.8
-    usage: lapis_init <name> [-p <path>] [-d]
+    usage: lapis_init <name> [-p <path>] [-d <path>]
 
     Available actions:
-    [name]      name of the lapis project
+    <name>      name of the lapis project
     -p <path>   the location of the installation for the project.
     -d <path>   makes the docker container. Needs docker-lapis path.
     -h          prints this text
