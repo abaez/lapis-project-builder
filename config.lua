@@ -1,15 +1,13 @@
 local config = require("lapis.config")
 
 config("development", {
-    port = 8081,
-    lua_code_cache = "on",
-    worker_connections = 1024
+    port = 8080,
+    lua_code_cache = "off",
 })
 
 config("production", {
-    port = 8080,
+    port = 80,
     num_workers = 4,
-    lua_code_cache = "off",
-    worker_connections = 1024
+    lua_code_cache = "on",
 })
 
