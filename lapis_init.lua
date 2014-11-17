@@ -5,7 +5,7 @@
 -- @module lapis_init
 
 local help = [=[
-    lapis_init v0.5
+    lapis_init v0.8
     usage: lapis_init <name> [-p <path>] [-d]
 
     Available actions:
@@ -17,32 +17,35 @@ local help = [=[
 ]=]
 
 
---- appends volume location fig.yml.
--- @function make_fig
--- @param loc location of the lapis project.
-function make_fig(loc)
-    fa = io.open(loc .. "/fig.yml", "a+")
-    fa:write("  volumes:\n    - " .. loc .. ":/server")
-    fa:close()
+--- writes a line to the file selected.
+-- @function write_line
+-- @param loc location of the file.
+-- @param file to write to.
+-- @param str to write.
+-- @param m optional mode for file to write. Defaults to "a+"  if left empty.
+function write_line(loc, file, str, m)
+    io.open(loc .. "/" .. file, m or "a+"):write(str):close()
 end
 
 --- creates the docker container for lapis.
 -- @function build_docker
 -- @param loc the location of the docker-lapis local copy.
 function build_docker(loc)
-    loc = loc or "/data/Projects/self/docker-lapis"
+    local loc = loc or "/data/Projects/self/docker-lapis"
     os.execute("cd " .. loc .. "; docker build -t abaez/lapis .")
 end
 
 --- creates the intialized directory for the lapis project.
 -- @function build_env
 -- @param loc location of the lapis project path.
--- @param template the mercurial repository to use as a template.
+-- @param project the mercurial repository to use as a project template.
 function build_env(loc, template)
-    template = template or "/data/Projects/self/lapis-template"
+    local template = template or "/data/Projects/self/lapis-template"
     os.execute(string.format("hg clone %s %s", template, loc))
-    os.execute("echo '' > " .. loc .. '/.hg/hgrc')
-    make_fig(loc)
+    os.remove(loc .. "/lapis_init.lua")
+    write_line(loc, ".hg/hgrc", "", "w")
+    write_line(loc, "config.ld", string.format("project = %q", arg[1]))
+    write_line(loc, "fig.yml", "  volumes:\n    - " .. loc .. ":/server")
 end
 
 --- simple delay timer.
