@@ -1,16 +1,49 @@
-Lapis-Template Builder
+Lapis Project Builder
 ======================
-A lapis template builder for docker containers and ldoc assembly by
+A [Lapis](http://leafo.net/lapis/) project builder with [docker](https://www.docker.com/)
+ [fig](http://www.fig.sh/) ready and ldoc assembly by
 [Alejandro Baez](https://twitter.com/a_baez).
 
 ## DESCRIPTION
+[Lapis](http://leafo.net/lapis) is a great lua/moonscript web framework. Lapis
+already has a project builder for the framework. However, there are couple of
+things I use to make my life easier using the already simplified tool.
 
+The purpose of this project builder is to automatically have a set of
+configurations for rapid prototyping using a
+[Docker](https://www.docker.com/) container for Lapis
+ web framework with [Fig](http://www.fig.sh/). As an extra bonus, [LDoc](http://stevedonovan.github.io/ldoc/index.html)
+ `config.ld` is added on the set up to help the 'process'. Due to using Lapis
+ from a container, you do not require to have it installed on your machine or
+ deal with actually getting it installed.
+
+## DEPENDENCIES
+
+*   [Docker](https://www.docker.com/)
+*   [Fig](http://www.fig.sh/)
+
+Optional:
+
+*   [LDoc](http://stevedonovan.github.io/ldoc/index.html)
+*   [Lapis](http://leafo.net/lapis/)
+
+## INSTALLATION
+First make sure you have the [Lapis Project Builder]() in a local copy.
+    hg clone <lapis-builder> <your location>
+Incase you want to have `lapis_init.lua` to use your default locations of both
+`lapis-builder` and your docker container, edit the default locations in
+`lapis_init.lua` to your own. Otherwise, you will have to point to the path,
+when you using the script. Afterwards, link `lapis_init.lua` into your
+preferred path, like so:
+    ln -s <lapis-builder literal location>/lapis_init.lua ~/bin/lapis_init
 
 ## USAGE
-First make sure you have the [lapis-template]() in a local copy.
+Run `lapis_init`, the help menu should say how to make a lapis project.
 
-To make [LDoc](http://stevedonovan.github.io/ldoc/index.html), run `ldoc .` in
-the root of the lapis project.
+You can use the lapis docker container by running `fig up` inside the
+directory of your lapis project that was initialized by `lapis_init`.
+
+To make use of ldoc, run `ldoc .` in the root of the lapis project.
 
 
 ## LICENSE
