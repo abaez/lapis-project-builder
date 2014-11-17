@@ -22,8 +22,7 @@ local help = [=[
 -- @param loc location of the lapis project.
 function make_fig(loc)
     fa = io.open(loc .. "/fig.yml", "a+")
-    fa:write("\tvolumes:\n")
-    fa:write("\t\t- " .. loc .. ":/server")
+    fa:write("  volumes:\n    - " .. loc .. ":/server")
     fa:close()
 end
 
