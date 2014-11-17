@@ -22,7 +22,7 @@ local help = [=[
 -- @param loc location of the file.
 -- @param file to write to.
 -- @param str to write.
--- @param m optional mode for file to write. Defaults to "a+"  if left empty.
+-- @param m optional mode for file to write. Defaults to "a+" if left empty.
 function write_line(loc, file, str, m)
     io.open(loc .. "/" .. file, m or "a+"):write(str):close()
 end
@@ -43,9 +43,11 @@ function build_env(loc, template)
     local template = template or "/data/Projects/self/lapis-template"
     os.execute(string.format("hg clone %s %s", template, loc))
     os.remove(loc .. "/lapis_init.lua")
-    write_line(loc, ".hg/hgrc", "", "w")
     write_line(loc, "config.ld", string.format("project = %q", arg[1]))
     write_line(loc, "fig.yml", "  volumes:\n    - " .. loc .. ":/server")
+    os.execute("rm -rf " .. loc .. "/.hg")
+    os.execute("cd " .. loc ..
+               "; hg init; hg add; hg commit -m 'initial commit'")
 end
 
 --- simple delay timer.
