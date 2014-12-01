@@ -44,6 +44,18 @@ function build_docker(loc)
     os.execute("cd " .. loc .. "; docker build -t abaez/lapis .")
 end
 
+--- checks lpb for new updates.
+-- @function has_update
+function has_update()
+    for line in io.popen("cd  " .. conf.lpb .. "; hg incoming"):lines() do
+        if line:match("no changes found") then
+          return false
+        end
+    end
+
+    return true
+end
+
 --- creates the intialized directory for the lapis project.
 -- @function build_env
 -- @param loc location of the lapis project path.
@@ -80,10 +92,12 @@ else
             elseif arg[i] == '-p' then
                 print("making environment build")
                 wait()
+                assert(not has_update(), "You need to update lpb")
                 build_env(arg[i+1] .. "/" .. arg[1])
             end
         end
     else
+        assert(not has_update(), "You need to update lpb")
         assert(arg[1] ~= '-d' and arg[1] ~= '-p', help)
         print("making environment project: " .. arg[1])
         wait()
