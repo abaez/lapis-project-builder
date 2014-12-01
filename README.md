@@ -31,7 +31,7 @@ Optional:
 First make sure you have the [Lapis Project Builder]() in a local copy.
     hg clone <lapis-builder> <your location>
 Incase you want to have `lapis_init.lua` to use your default locations of both
-`lapis-builder` and your docker container, edit the default locations in
+`lapis-builder` and your docker container, edit the conf table fields in
 `lapis_init.lua` to your own. Otherwise, you will have to point to the path,
 when you using the script. Afterwards, link `lapis_init.lua` into your
 preferred path, like so:
