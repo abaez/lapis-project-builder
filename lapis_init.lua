@@ -14,7 +14,7 @@ local conf = {
 }
 
 local help = [=[
-    lapis_init v0.8
+    lapis_init v1.0
     usage: lapis_init <name> [-p <path>] [-d <path>]
 
     Available actions:
