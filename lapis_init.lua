@@ -93,7 +93,7 @@ else
                 print("making environment build")
                 wait()
                 assert(not has_update(), "You need to update lpb")
-                build_env(arg[i+1] .. "/" .. arg[1])
+                build_env(arg[i+1] .. "/" .. arg[1], arg[1])
             end
         end
     else
@@ -101,6 +101,7 @@ else
         assert(arg[1] ~= '-d' and arg[1] ~= '-p', help)
         print("making environment project: " .. arg[1])
         wait()
-        build_env(string.format("%s/%s", io.popen("pwd"):read(), arg[1]))
+        build_env(string.format(
+          "%s/%s", io.popen("pwd"):read(), arg[1]), arg[1])
     end
 end

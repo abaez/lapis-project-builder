@@ -1,0 +1,4 @@
+syntax: regexp
+doc
+.*\.compiled
+logs
