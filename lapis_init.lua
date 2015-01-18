@@ -14,47 +14,6 @@ function vcs_str(vcs)
     "hg init; hg commit -Am 'initial commit'"
 end
 
---- writes a line to the file selected.
--- @function write_line
--- @param dest location of the file.
--- @param file to write to.
--- @param str to write.
--- @param m optional mode for file to write. Defaults to "a+" if left empty.
-function write_line(dest, file, str, m)
-  io.open(dest .. "/" .. file, m or "a+"):write(str):close()
-end
-
---- makes the config file for love_init
--- @param file the absolute location of default configuration file.
--- @param src see @{src}.
-local function make_conf(file, src)
-  print("making the file: " .. file)
-  local finit = io.open(file, "w")
-  for line in io.open(src .."/templates/lapis_init.conf"):lines() do
-    finit:write(line, "\n")
-  end
-  finit:close()
-
-  print("Please change src correctly in:", file)
-  os.exit()
-end
-
---- gets the user configuration file.
--- @param file see @{file}.
--- @param src see @{src}.
-local function get_user(file, src)
-  local user = ""
-  if not io.open(file) then
-    assert(src, "run with [-s <source>] argument")
-    make_conf(file, src)
-  else
-    user = dofile(file, "t")
-    assert(user.src, "Edit src: '" .. file .. "' to run")
-  end
-
-  return user
-end
-
 --- creates the docker container for lapis from abaez/docker-lapis.
 -- @param cont the docker-lapis source location.
 local function build_docker(cont)
