@@ -32,9 +32,13 @@ end
 
 --- creates the intialized directory for the lapis project.
 -- @function build_env
--- @param dest location for the lapis project.
--- @param templates the templates to use.
-function build_env(dest, templates)
+-- @param dest location of the project directory.
+-- @param name the name love project path.
+-- @param src the source path of lapis project builder.
+-- @param cont see @{build_docker| cont}.
+-- @param user see @{user}.
+-- @param vcs see @{vcs_str| vcs}.
+function build_env(dest, name, src, cont, user, vcs)
 end
 
 --- simple delay timer.
