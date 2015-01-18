@@ -6,6 +6,14 @@
 
 local _CONF = io.popen("echo $HOME"):read() .. "/.lapis_init.conf"
 
+--- gives the string for the specified vcs.
+-- @param vcs choose which DVCS to use. If 'git' not given, then auto to 'hg'.
+function vcs_str(vcs)
+  return vcs == 'git' and
+    "git init; git add -A; git commit -m 'initial commit'" or
+    "hg init; hg commit -Am 'initial commit'"
+end
+
 --- writes a line to the file selected.
 -- @function write_line
 -- @param dest location of the file.
@@ -16,12 +24,20 @@ function write_line(dest, file, str, m)
   io.open(dest .. "/" .. file, m or "a+"):write(str):close()
 end
 
---- gives the string for the specified vcs.
--- @param vcs choose which DVCS to use. If 'git' not given, then auto to 'hg'.
-function vcs_str(vcs)
-  return vcs == 'git' and
-    "git init; git add -A; git commit -m 'initial commit'" or
-    "hg init; hg commit -Am 'initial commit'"
+--- gets the user configuration file.
+-- @param file see @{file}.
+-- @param src see @{src}.
+local function get_user(file, src)
+  local user = ""
+  if not io.open(file) then
+    assert(src, "run with [-s <source>] argument")
+    make_conf(file, src)
+  else
+    user = dofile(file, "t")
+    assert(user.src, "Edit src: '" .. file .. "' to run")
+  end
+
+  return user
 end
 
 --- creates the docker container for lapis from abaez/docker-lapis.
@@ -39,6 +55,9 @@ end
 -- @param user see @{user}.
 -- @param vcs see @{vcs_str| vcs}.
 function build_env(dest, name, src, cont, user, vcs)
+  assert(os.execute("mkdir " .. dest), "Couldn't make: " .. dest)
+
+  os.execute("cd " .. loc .. ";" .. vcs_str(vcs))
 end
 
 --- simple delay timer.
