@@ -24,6 +24,21 @@ function write_line(dest, file, str, m)
   io.open(dest .. "/" .. file, m or "a+"):write(str):close()
 end
 
+--- makes the config file for love_init
+-- @param file the absolute location of default configuration file.
+-- @param src see @{src}.
+local function make_conf(file, src)
+  print("making the file: " .. file)
+  local finit = io.open(file, "w")
+  for line in io.open(src .."/templates/lapis_init.conf"):lines() do
+    finit:write(line, "\n")
+  end
+  finit:close()
+
+  print("Please change src correctly in:", file)
+  os.exit()
+end
+
 --- gets the user configuration file.
 -- @param file see @{file}.
 -- @param src see @{src}.
