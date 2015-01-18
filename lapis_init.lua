@@ -4,26 +4,7 @@
 -- @license MIT (see @{README.md.LICENSE|LICENSE})
 -- @module lapis_init
 
---- default configurations for lapis_init.
--- @table conf
--- @field lpb the lapis-project-builder location.
--- @field dl the docker-lapis location.
-local conf = {
-  lpb = "/data/Projects/self/lapis-project-builder",
-  dl = "/data/Projects/self/docker-lapis"
-}
-
-local help = [=[
-  lapis_init v1.0
-  usage: lapis_init <name> [-p <path>] [-d <path>]
-
-  Available actions:
-  <name>      name of the lapis project
-  -p <path>   the location of the installation for the project.
-  -d <path>   makes the docker container. Needs docker-lapis path.
-  -h          prints this text
-
-]=]
+local _CONF = io.popen("echo $HOME"):read() .. "/.lapis_init.conf"
 
 
 --- writes a line to the file selected.
@@ -40,14 +21,14 @@ end
 -- @function build_docker
 -- @param loc the location of the docker-lapis local copy.
 function build_docker(loc)
-  local loc = loc or conf.dl
   os.execute("cd " .. loc .. "; docker build -t abaez/lapis .")
 end
 
 --- checks lpb for new updates.
 -- @function has_update
-function has_update()
-  for line in io.popen("cd  " .. conf.lpb .. "; hg incoming"):lines() do
+-- @param src project builder installed location
+function has_update(src)
+  for line in io.popen("cd  " .. src .. "; hg incoming"):lines() do
     if line:match("no changes found") then
       return false
     end
@@ -73,12 +54,21 @@ function build_env(loc, template)
 end
 
 --- simple delay timer.
--- @function wait
-function wait()
-  local t = os.time() + 3
-  while os.time() < t  do
-  end
+function wait(time)
+  local time = time or os.time() + 3; while os.time() < time  do end
 end
+
+local help = [=[
+  lapis_init v1.0
+  usage: lapis_init <name> [-p <path>] [-d <path>]
+
+  Available actions:
+  <name>      name of the lapis project
+  -p <path>   the location of the installation for the project.
+  -d <path>   makes the docker container. Needs docker-lapis path.
+  -h          prints this text
+
+]=]
 
 if #arg == 0 or arg[1] == "-h" then
   print(help)
