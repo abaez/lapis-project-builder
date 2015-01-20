@@ -6,12 +6,18 @@
 
 local _CONF = io.popen("echo $HOME"):read() .. "/.lapis_init.conf"
 
---- gives the string for the specified vcs.
--- @param vcs choose which DVCS to use. If 'git' not given, then auto to 'hg'.
-function vcs_str(vcs)
-  return vcs == 'git' and
-    "git init; git add -A; git commit -m 'initial commit'" or
-    "hg init; hg commit -Am 'initial commit'"
+local common = false
+local templates = false
+local user = false
+
+--- loads module files from src.
+-- @param file the configuration file.
+-- @param src see @{user}.
+local function load_mod(file, src)
+  package.path = (src or dofile(file).src) .. "/?.lua;" .. package.path
+  common = require("common")
+  templates = require("templates")
+  user = require("user")
 end
 
 --- creates the docker container for lapis from abaez/docker-lapis.
@@ -26,19 +32,13 @@ end
 -- @param name the name love project path.
 -- @param src the source path of lapis project builder.
 -- @param cont see @{build_docker| cont}.
--- @param user see @{user}.
+-- @param user see @{conf.user| user}.
 -- @param vcs see @{vcs_str| vcs}.
 function build_env(dest, name, src, cont, user, vcs)
   assert(os.execute("mkdir " .. dest), "Couldn't make: " .. dest)
 
-  os.execute("cd " .. loc .. ";" .. vcs_str(vcs))
+  os.execute("cd " .. loc .. ";" .. common.vcs_str(vcs))
 end
-
---- simple delay timer.
-function wait(time)
-  local time = time or os.time() + 3; while os.time() < time  do end
-end
-
 --- a temporary table for command run.
 -- @param cwd holds the current working directory of lapis_init.
 local tmp = {
@@ -68,7 +68,7 @@ local help = [=[
 if #arg == 0 or arg[1] == '-h' then
   print(help)
 elseif arg[1] == '-s' then
-  get_user(_CONF, arg[2])
+  require("user"):get(_CONF, arg[2])
 else
   assert(arg[1] ~= '-d' and arg[1] ~= '-p', help)
   tmp.name = arg[1]
@@ -86,21 +86,23 @@ else
       end
     end
 
+    load_mod(_CONF, tmp.src)
     print("making environment project: " .. tmp.name)
     build_env(
       tmp.dest or tmp.cwd .. tmp.name,
       tmp.name,
       tmp.src,
       tmp.cont,
-      get_user(_CONF, tmp.src),
+      user:get(_CONF, tmp.src),
       tmp.vcs)
   else
+    load_mod(_CONF, tmp.src)
     print("making environment project: " .. tmp.name)
     build_env(tmp.cwd .. tmp.name,
               tmp.name,
               tmp.src,
               tmp.cont,
-              get_user(_CONF, tmp.src),
+              user:get(_CONF, tmp.src),
               tmp.vcs)
   end
 end
