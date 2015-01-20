@@ -26,6 +26,16 @@ local function build_docker(cont)
   os.execute("cd " .. cont .. "; docker build -t abaez/lapis .")
 end
 
+--- appends from template with basic settings.
+-- @param dest see @{build_env| dest}.
+-- @param name see @{build_env| name}.
+local function append_files(dest, name)
+  templates:write_line(dest, "config.ld", string.format(
+    "project = %q\ntitle = %q", name, name .. " docs"))
+  templates:write_line(dest, "fig.yml",
+    "  volumes:\n    - " .. dest .. ":/server")
+end
+
 --- creates the intialized directory for the lapis project.
 -- @function build_env
 -- @param dest location of the project directory.
@@ -36,8 +46,10 @@ end
 -- @param vcs see @{vcs_str| vcs}.
 function build_env(dest, name, src, cont, user, vcs)
   assert(os.execute("mkdir " .. dest), "Couldn't make: " .. dest)
+  templates:copy(dest, user.templates, src or user.src)
+  append_files(dest, name)
 
-  os.execute("cd " .. loc .. ";" .. common.vcs_str(vcs))
+  os.execute("cd " .. dest .. ";" .. common.vcs_str(vcs))
 end
 --- a temporary table for command run.
 -- @param cwd holds the current working directory of lapis_init.
