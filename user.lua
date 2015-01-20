@@ -11,7 +11,7 @@ local M = {}
 function M:make(file, src)
   print("making the file: " .. file)
   local finit = io.open(file, "w")
-  for line in io.open(src .. "/templates/love_init.conf"):lines() do
+  for line in io.open(src .. "/templates/lapis_init.conf"):lines() do
     finit:write(line, "\n")
   end
   finit:close()
@@ -24,16 +24,16 @@ end
 -- @param file see @{make| file}.
 -- @param src see @{templates.copy| src}.
 function M:get(file, src)
-  local user = ""
+  local tmp = ""
   if not io.open(file) then
     assert(src, "run with [-s <source>] argument")
-    make_conf(file, src)
+    self:make(file, src)
   else
-    user = dofile(file, "t")
-    assert(user.src, "Edit src: '" .. file .. "' to run")
+    tmp = dofile(file, "t")
+    assert(tmp.src, "Edit src: '" .. file .. "' to run")
   end
 
-  return user
+  return tmp
 end
 
 
