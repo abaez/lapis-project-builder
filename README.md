@@ -20,6 +20,7 @@ configurations for rapid prototyping using a
 ## DEPENDENCIES
 
 *   [Docker](https://www.docker.com/)
+    *   [abaez/lapis docker container](https://github.com/abaez/docker-lapis)
 *   [Fig](http://www.fig.sh/)
 
 Optional:
