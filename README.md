@@ -29,22 +29,42 @@ Optional:
 *   [Lapis](http://leafo.net/lapis/)
 
 ## INSTALLATION
-First make sure you have the [Lapis Project Builder]() in a local copy.
-    hg clone <lapis-builder> <your location>
-Incase you want to have `lapis_init.lua` to use your default locations of both
-`lapis-builder` and your docker container, edit the conf table fields in
-`lapis_init.lua` to your own. Otherwise, you will have to point to the path,
-when you using the script. Afterwards, link `lapis_init.lua` into your
-preferred path, like so:
+First make sure you have the [Love2D Project Builder](#) in a local copy.
+
+    hg clone <lapis-project-builder> <your location>
+Next link or copy `lapis_init` to your `$PATH` like so:
+
     ln -s <lapis-builder literal location>/lapis_init.lua ~/bin/lapis_init
+Next, when you run `lapis_init` for the first time, it will ask you to use the
+`-s` argument parameter if not given. You need to give the source location of
+`lapis-project-builder` like so:
+
+    lapis_init -s <lapis-project-builder>
+After running the first time, the `-s <src>` argument is optional.
+Finally, edit `~/.lapis.init.conf` key `src` to where you have your src:
+
+    inside (~/.lapis.init.conf)
+    src = "/your/location/for/lapis-project-builder"
 
 ## USAGE
-Run `lapis_init`, the help menu should say how to make a lapis project.
+You can run with only the name of the project:
 
-You can use the lapis docker container by running `fig up` inside the
-directory of your lapis project that was initialized by `lapis_init`.
+    lapis_init <name>
+You can run with project path destination:
 
-To make use of ldoc, run `ldoc .` in the root of the lapis project.
+    lapis_init <name> -p <path>
+You can also use your own location for source of `lapis-project-builder`:
+
+    lapis_init <name> -s <src>
+Note that `lapis_init` automatically defaults to mercurial. If you want to use
+git simply use the `-g` argument.
+
+    lapis_init <name> -g
+Lastly, you can combine commands:
+
+    lapis_init <name> -p <path> -s <src> -g
+If you have ldoc installed, then when you already have a project you can run
+`ldoc .` to build api documentation.
 
 
 ## LICENSE
