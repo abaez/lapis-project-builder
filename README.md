@@ -1,7 +1,7 @@
 Lapis Project Builder
 ======================
 A [Lapis](http://leafo.net/lapis/) project builder with [docker](https://www.docker.com/)
- [fig](http://www.fig.sh/) ready and ldoc assembly by
+ [Docker Compose](http://docs.docker.com/compose/) ready and ldoc assembly by
 [Alejandro Baez](https://twitter.com/a_baez).
 
 ## DESCRIPTION
@@ -12,7 +12,7 @@ things I use to make my life easier using the already simplified tool.
 The purpose of this project builder is to automatically have a set of
 configurations for rapid prototyping using a
 [Docker](https://www.docker.com/) container for Lapis
- web framework with [Fig](http://www.fig.sh/). As an extra bonus, [LDoc](http://stevedonovan.github.io/ldoc/index.html)
+ web framework with [Docker Compose](http://docs.docker.com/compose/). As an extra bonus, [LDoc](http://stevedonovan.github.io/ldoc/index.html)
  `config.ld` is added on the set up to help the 'process'. Due to using Lapis
  from a container, you do not require to have it installed on your machine or
  deal with actually getting it installed.
@@ -21,7 +21,7 @@ configurations for rapid prototyping using a
 
 *   [Docker](https://www.docker.com/)
     *   [abaez/lapis docker container](https://github.com/abaez/docker-lapis)
-*   [Fig](http://www.fig.sh/)
+*   [Docker Compose](http://docs.docker.com/compose/)
 
 Optional:
 

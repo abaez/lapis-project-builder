@@ -32,7 +32,7 @@ end
 local function append_files(dest, name)
   templates:write_line(dest, "config.ld", string.format(
     "project = %q\ntitle = %q", name, name .. " docs"))
-  templates:write_line(dest, "fig.yml",
+  templates:write_line(dest, "docker-compose.yml",
     "  volumes:\n    - " .. dest .. ":/app")
 end
 
